@@ -1,6 +1,7 @@
 const express=require('express')
 const db=require('./db')
 const router=express.Router()
+const {rule,rerr}=require('./validator')
 
 router.get('/',async(req,res)=>{
     try{
@@ -25,7 +26,7 @@ router.get('/:id',async(req,res)=>{
     }
 })
 
-router.post('/',async(req,res)=>{
+router.post('/',rule,rerr,async(req,res)=>{
     try{
         const {name,year}=req.body
         const newMovie=await db.create({name,year})
