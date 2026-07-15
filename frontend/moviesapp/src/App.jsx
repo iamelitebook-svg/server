@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Web from './Web.jsx'
 
 function App() {
   const [name, setName] = useState('')
@@ -7,7 +8,7 @@ function App() {
 
 const movieList=async()=>{
   try{
-    const response=await fetch('http://localhost:3000/users')
+    const response=await fetch('http://localhost:3000/movies')
     const data=await response.json()
     setMovies(Array.isArray(data)? data:data.data || [])
   }catch(err){
@@ -21,7 +22,7 @@ const movieList=async()=>{
   const handleSubmit =async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch('http://localhost:3000/users', {
+      const response = await fetch('http://localhost:3000/movies', {
         method: 'POST',
         headers: {
           'Content-Type':'application/json'
@@ -44,20 +45,14 @@ const movieList=async()=>{
 
   return (
     <div>
-      <form action="" onSubmit={handleSubmit}>
-        <input type="text" placeholder='Moviename' value={name} onChange={(e) => setName(e.target.value)} />
-        <input type="text" placeholder='year' value={year} onChange={(e) => setYear(e.target.value)} />
-        <button type='submit'>Submit</button>
-      </form>
-
-      <h2>Movie List</h2>
-      <ul>
-        {movies.map((movie,index)=>(
-          <li key={movie._id || movie.id || index}>
-            <strong>{movie.name}</strong>({movie.year})
-          </li>
-        ))}
-      </ul>
+      <Web 
+      handleSubmit={handleSubmit}
+      name={name}
+      setName={setName}
+      year={year}
+      setYear={setYear}
+      movies={movies}
+      />
     </div>
   )
 }
